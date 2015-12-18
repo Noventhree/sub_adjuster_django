@@ -1,0 +1,16 @@
+{% extends "sub_adjuster/base.html" %}
+
+    {% block user_content %}
+
+        <div class="download_form">
+
+
+            <form method="POST" action=""> {% csrf_token %}
+                {{sub_base_form.as_p}}
+                <!--<input type="submit" value="Add Goal"/>-->
+
+            </form>
+
+        </div>
+
+    {% endblock %}

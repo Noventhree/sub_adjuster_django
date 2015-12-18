@@ -1,0 +1,96 @@
+{% load staticfiles %}
+<html>
+    <head>
+            <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static "css/base.css" %}">
+        <script type="text/javascript" src="{% static "js/script.js" %}"></script>
+        <!--<script type="text/javascript" src="{{ STATIC_URL }}js/script.js"></script>-->
+        <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+        <meta charset="UTF-8">
+
+
+    </head>
+    <body>
+        <!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
+          <!--<div class="container-fluid">-->
+              <!--<div class="navbar-header">-->
+              <!--<a href="/" class="navbar-brand">CZASO ORGANIZER</a>-->
+
+              <!--<button class = "navbar-toggle" data-toggle="collapse" data-target="#navHeaderCollapse">-->
+                  <!--<span class="icon-bar"></span>-->
+                  <!--<span class="icon-bar"></span>-->
+                  <!--<span class="icon-bar"></span>-->
+              <!--</button>-->
+              <!--</div>-->
+
+              <!--<div class="collapse navbar-collapse" id="navHeaderCollapse">-->
+                  <!--{% if user.is_authenticated %}-->
+                  <!--<ul class = "nav navbar-nav navbar-right">-->
+
+                      <!--<li><a href="#">Welcome {{request.user.username}}!</a></li>-->
+                      <!--<li><a href = "#">jeb jeb</a></li>-->
+                      <!--<li><a href = "/logout/">Log Out</a></li>-->
+
+
+                  <!--</ul>-->
+                  <!--{% else %}-->
+                  <!--<ul class = "nav navbar-nav navbar-right">-->
+
+                      <!--<li><a href = "/register/">Register</a></li>-->
+                      <!--<li><a href = "/login/">Log In</a></li>-->
+
+
+
+                  <!--</ul>-->
+
+                  <!--{% endif %}-->
+              <!--</div>-->
+          <!--</div>-->
+        <!--</nav>-->
+        <!-- JUMBOTRON-->
+        <!--<div class="jumbotron vertical-center">-->
+          <!--<div class="container">-->
+            <!--{% block jumbotron %}-->
+            <!--{% endblock %}-->
+          <!--</div>-->
+        <!--</div>-->
+
+        </div>
+        <!-- CONTENT-->
+        <div>
+            {% if  user.is_authenticated %}
+                {% block user_content %}
+                {% endblock %}
+
+            {% else %}
+                <p>Log In or Register!</p>
+                {% block content %}
+                {% endblock %}
+            {% endif %}
+
+
+
+
+
+        </div>
+        <!-- FOOT-->
+        <div class="foot">
+            <p>STOPKA</p>
+        </div>
+
+
+
+    </body>
+
+
+</html>

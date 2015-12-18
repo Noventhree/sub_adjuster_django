@@ -1,0 +1,28 @@
+{% extends "sub_adjuster/base.html" %}
+
+    {% block user_content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Upload base subtitles</h3>
+                <form enctype="multipart/form-data" method="POST" action="" name="base_sub_form"> {% csrf_token %}
+                    {{ base_sub_upload_form.as_p }}
+                    {{ blueprint_sub_upload_form.as_p }}
+                    <input type="submit" value="Upload" name="base_sub_button" />
+
+                </form>
+        </div>
+        <div class="col-md-6">
+            <h3>Upload blueprint subtitles</h3>
+                <form enctype="multipart/form-data" method="POST" action="" name="blueprint_sub_form"> {% csrf_token %}
+                    {{ blueprint_sub_upload_form.as_p }}
+                    <input type="submit" value="Upload" name="blueprint_sub_button" />
+                </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="submit" value="Upload!" onclick="submitForms()" />
+        </div>
+    </div>
+
+    {% endblock %}

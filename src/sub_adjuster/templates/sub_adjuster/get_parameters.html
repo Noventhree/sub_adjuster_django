@@ -1,0 +1,67 @@
+{% extends "sub_adjuster/base.html" %}
+
+
+    {% block user_content %}
+
+
+        <p>jeb {{ post_data }}</p>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <p>{{ base_file_name }}</p>
+                <div class="sub_guts">
+                    <ul>
+                        {% for index, line in base_file_lines %}
+
+                        <div class="ui-draggable">
+
+                            <li>{{ line|linebreaks }}</li>
+
+                        </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                 <p>{{ blueprint_file_name }}</p>
+                <div class="sub_guts">
+                    <ul>
+                        {% for index, line in blueprint_file_lines %}
+
+                        <div class="ui-draggable">
+
+                            <li>{{ line|linebreaks }}</li>
+
+                        </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form method="POST" action=""> {% csrf_token %}
+                    {{sub_base_form.as_p}}
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form method="POST" action=""> {% csrf_token %}
+                    {{sub_blueprint_form.as_p}}
+                </form>
+            </div>
+        </div>
+
+        <div id="droppable" class="ui-droppable">
+             <p>Drop here</p>
+        </div>
+        <div class="par_form">
+            <form method="POST" action=""> {% csrf_token %}
+                {{par_form.as_p}}
+
+        </div>
+
+
+
+    {% endblock %}
