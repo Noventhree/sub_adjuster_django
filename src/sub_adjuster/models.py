@@ -57,7 +57,7 @@ def code(total_start, total_end):
 
 
 class Subtitles(models.Model):
-    sub_file = models.FileField()
+    sub_file = models.FileField(blank=True)
     line_A = models.CharField(max_length=255, blank=True, default='1')
     line_B = models.CharField(max_length=255, blank=True, default='1')
     line_C = models.CharField(max_length=255, blank=True, default='1')

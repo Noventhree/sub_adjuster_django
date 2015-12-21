@@ -41,16 +41,20 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
-                <form method="POST" action=""> {% csrf_token %}
+            <form method="POST" action=""> {% csrf_token %}
+            <div class="col-md-6" id="base">
+
                     {{sub_base_form.as_p}}
                 </form>
             </div>
-            <div class="col-md-6">
-                <form method="POST" action=""> {% csrf_token %}
-                    {{sub_blueprint_form.as_p}}
-                </form>
+            <div class="col-md-6" id="blueprint">
+                <div class="blueprint">
+                    <form method="POST" action=""> {% csrf_token %}
+                        {{sub_blueprint_form.as_p}}
+
+                </div>
             </div>
+            </form>
         </div>
 
         <div id="droppable" class="ui-droppable">

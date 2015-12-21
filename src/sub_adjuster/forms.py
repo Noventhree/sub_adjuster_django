@@ -15,15 +15,20 @@ class BaseSubUploadForm(forms.ModelForm):
         model = Subtitles
         fields = ['sub_file']
 
-class InitializeSubtitlesBaseForm(forms.ModelForm):
-    class Meta:
-        model = Subtitles
-        fields = ['line_A', 'line_B', 'line_C']
 
-class InitializeParametersBlueprintForm(forms.ModelForm):
+class GetLinesForm(forms.ModelForm):
     class Meta:
         model = Subtitles
         fields = ['line_A', 'line_B', 'line_C']
+# class InitializeSubtitlesBaseForm(forms.ModelForm):
+#     class Meta:
+#         model = Subtitles
+#         fields = ['line_A', 'line_B', 'line_C']
+#
+# class InitializeParametersBlueprintForm(forms.ModelForm):
+#     class Meta:
+#         model = Subtitles
+#         fields = ['line_A', 'line_B', 'line_C']
 
 class InitializeParametersForm(forms.ModelForm):
     class Meta:

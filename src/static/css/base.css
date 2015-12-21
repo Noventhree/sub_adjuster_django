@@ -20,7 +20,7 @@ li {
 .sub_form {
     display: inline-block;
 
-}
+
 
 #draggable {}
 #droppable { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }

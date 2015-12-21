@@ -30,6 +30,11 @@ $(function() {
 
 });
 
+//function getid(obj) {
+//            alert(obj.id);
+//        }
+//var currentid = getid
+
 submitForms = function(){
     document.forms["blueprint_sub_form"].submit();
     document.forms["base_sub_form"].submit();

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import InitializeSubtitlesBaseForm, InitializeParametersBlueprintForm, InitializeParametersForm, \
-    BaseSubUploadForm, BlueprintSubUploadForm, SubUploadForm
+    BaseSubUploadForm, BlueprintSubUploadForm, SubUploadForm, GetLinesForm
 from .models import Subtitles, Parameters, Adjuster
 from django.http import HttpResponseRedirect
 from django.core.files import File
@@ -10,69 +10,40 @@ from django.core.files.base import ContentFile
 # Create your views here.
 def upload_file_view(request):
     context = {
-        # 'base_sub_upload_form': BaseSubUploadForm(),
-        # 'blueprint_sub_upload_form': BlueprintSubUploadForm(),
         'base_sub_upload_form': SubUploadForm(prefix='base'),
         'blueprint_sub_upload_form': SubUploadForm(prefix='blueprint'),
-        # 'base_sub_upload_form': form1,
-        # 'blueprint_sub_upload_form': form2,
-
     }
 
     if request.method == 'POST':
-        request.session['post'] = request.files.items()
-        # form1 = BaseSubUploadForm(request.POST, request.FILES)
-        # form2 = BlueprintSubUploadForm(request.POST, request.FILES)
 
         form1 = SubUploadForm(request.POST, request.FILES, prefix='base')
         form2 = SubUploadForm(request.POST, request.FILES, prefix='blueprint')
 
-        # form1 = BaseSubUploadForm(request.POST, request.FILES, prefix='base')
-        # form2 = BlueprintSubUploadForm(request.POST, request.FILES, prefix='blueprint')
-
         form1_valid = form1.is_valid()
         form2_valid = form2.is_valid()
 
-
-        # if form1_valid and form2_valid:
-        if form2_valid:
-        # if form1.is_valid() and form2.is_valid():
-        #     form1.save()
-        #     baseSub = Subtitles.objects.latest('id')
-        #     base_sub_id = baseSub.id
-        #     request.session['base_sub_id'] = base_sub_id
+        if form1_valid and form2_valid:
+            form1.save()
+            baseSub = Subtitles.objects.latest('id')
+            base_sub_id = baseSub.id
+            request.session['base_sub_id'] = base_sub_id
 
             form2.save()
             blueprintSub = Subtitles.objects.latest('id')
             blueprint_sub_id = blueprintSub.id
             request.session['blueprint_sub_id'] = blueprint_sub_id
 
-            # a = form1.save()
-            # baseSub = Subtitles.objects.latest('id')
-            # base_sub_id = baseSub.id
-            # request.session['base_sub_id'] = base_sub_id
-            # b = form2.save(commit=False)
-            #
-            # b.foreignkeytoA = a
-            # b.save()
-            # blueprintSub = Subtitles.objects.latest('id')
-            # blueprint_sub_id = blueprintSub.id
-            # request.session['blueprint_sub_id'] = blueprint_sub_id
-
-
             return HttpResponseRedirect('/get_parameters/')
 
-        # else:
-        #     form1 = BaseSubUploadForm(prefix='base')
-        #     form2 = BlueprintSubUploadForm(prefix='blueprint')
-
     return render(request, 'sub_adjuster/upload.html', context)
+
 
 def download_file_view(request):
     # context = {
     #
     # }
     pass
+
 
 def handle_file_to_display(path):
     file_lines = []
@@ -104,6 +75,7 @@ def handle_file_to_display(path):
                 content['text'] += line
         return file_lines
 
+
 def adjust_file_view(request):
     context = {
 
@@ -132,11 +104,12 @@ def adjust_file_view(request):
 
     return render(request, 'sub_adjuster/download.html', context)
 
+
 def get_adjusted_filename(filename):
     return str(filename[2:-4] + "ADJUSTED" + ".srt")
 
-def get_parameters_view(request):
 
+def get_parameters_view(request):
     base_sub_id = request.session.get('base_sub_id', None)
     baseSub = Subtitles.objects.get(id=base_sub_id)
     base_file_lines = handle_file_to_display(baseSub.sub_file.path)
@@ -150,12 +123,26 @@ def get_parameters_view(request):
     context = {
         "base_file_lines": enumerate(base_file_lines),
         "blueprint_file_lines": enumerate(blueprint_file_lines),
-        "sub_base_form": InitializeSubtitlesBaseForm,
-        "sub_blueprint_form": InitializeParametersBlueprintForm,
+        "sub_base_form": GetLinesForm(prefix='base'),
+        "sub_blueprint_form": GetLinesForm(prefix='blueprint'),
         "par_form": InitializeParametersForm,
         "base_file_name": str(base_sub_id),
         "blueprint_file_name": str(blueprint_sub_id),
         # "post_data": request.session['post'],
     }
+
+    form1 = GetLinesForm(request.POST, prefix='base')
+    form2 = GetLinesForm(request.POST, prefix='blueprint')
+
+    form1_valid = form1.is_valid()
+    form2_valid = form2.is_valid()
+
+    if form1_valid and form2_valid:
+        baseSub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
+
+        baseSub.line_A =
+
+
+
 
     return render(request, 'sub_adjuster/get_parameters.html', context)
