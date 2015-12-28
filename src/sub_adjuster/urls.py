@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^$', views.upload_file_view, name='upload_file'),
     url(r'^get_parameters/$', views.get_parameters_view, name='get_parameters'),
     url(r'^download/$', views.download_file_view, name='download'),
+    # url(r'^download/$', views.download_file_view, name='adjust'),
 
     #
     # # LOGIN

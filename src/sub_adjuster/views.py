@@ -1,10 +1,13 @@
 from django.shortcuts import render
-from .forms import InitializeSubtitlesBaseForm, InitializeParametersBlueprintForm, InitializeParametersForm, \
+from .forms import InitializeParametersForm, \
     BaseSubUploadForm, BlueprintSubUploadForm, SubUploadForm, GetLinesForm
 from .models import Subtitles, Parameters, Adjuster
 from django.http import HttpResponseRedirect
 from django.core.files import File
 from django.core.files.base import ContentFile
+import os, tempfile, zipfile
+from django.http import HttpResponse
+from django.core.servers.basehttp import FileWrapper
 
 
 # Create your views here.
@@ -39,10 +42,13 @@ def upload_file_view(request):
 
 
 def download_file_view(request):
-    # context = {
-    #
-    # }
-    pass
+    adjusted_sub_id = request.session['adjusted_sub_id']
+    adjustedSub = Subtitles.objects.get(id=adjusted_sub_id)
+    context = {
+        'filepath': adjustedSub.sub_file.path,
+
+    }
+    return render(request, 'sub_adjuster/download.html', context)
 
 
 def handle_file_to_display(path):
@@ -133,16 +139,60 @@ def get_parameters_view(request):
 
     form1 = GetLinesForm(request.POST, prefix='base')
     form2 = GetLinesForm(request.POST, prefix='blueprint')
+    if request.method == 'POST':
 
-    form1_valid = form1.is_valid()
-    form2_valid = form2.is_valid()
+        form1_valid = form1.is_valid()
+        form2_valid = form2.is_valid()
 
-    if form1_valid and form2_valid:
-        baseSub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
+        if form1_valid and form2_valid:
+            baseSub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
 
-        baseSub.line_A =
+            baseSub.line_A = request.POST['base-line_A']
+            baseSub.line_B = request.POST['base-line_B']
+            baseSub.line_C = request.POST['base-line_C']
+            baseSub.save()
 
+            blueprintSub.line_A = request.POST['blueprint-line_A']
+            blueprintSub.line_B = request.POST['blueprint-line_B']
+            blueprintSub.line_C = request.POST['blueprint-line_C']
+            blueprintSub.save()
+
+            baseSub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
+            adjusterObj = Adjuster(baseSub, blueprintSub)
+            if adjusterObj.initial_deley == 0:
+                pass
+
+                # adjusterObj.get_initial_deley()
+            if adjusterObj.multiplier == 1:
+                pass
+                # adjusterObj.get_multiplyer()
+
+                adjusted_filename = get_adjusted_filename(baseSub.sub_file.name)
+                adjusted_file_content = ContentFile("".join(adjusterObj.adjust_content()))
+
+                adjustedSub = Subtitles()
+                adjustedSub.sub_file.save(adjusted_filename, adjusted_file_content, save=True)
+
+                adjustedSub = Subtitles.objects.latest('id')
+                adjusted_sub_id = adjustedSub.id
+                request.session['adjusted_sub_id'] = adjusted_sub_id
+
+            return render(request, 'sub_adjuster/download.html', context)
 
 
 
     return render(request, 'sub_adjuster/get_parameters.html', context)
+
+def send_file(request):
+    """
+    Send a file through Django without loading the whole file into
+    memory at once. The FileWrapper will turn the file object into an
+    iterator for chunks of 8KB.
+    """
+
+    adjusted_sub_id = request.session['adjusted_sub_id']
+    filename = __file__ # Select your file here.
+    wrapper = FileWrapper(File(filename))
+    response = HttpResponse(wrapper, content_type='text/plain')
+    response['Content-Length'] = os.path.getsize(filename)
+    return response

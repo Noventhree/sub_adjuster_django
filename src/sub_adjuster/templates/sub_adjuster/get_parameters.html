@@ -42,18 +42,18 @@
 
         <div class="row">
             <form method="POST" action=""> {% csrf_token %}
-            <div class="col-md-6" id="base">
+                <div class="col-md-6" id="base">
 
-                    {{sub_base_form.as_p}}
-                </form>
-            </div>
-            <div class="col-md-6" id="blueprint">
-                <div class="blueprint">
-                    <form method="POST" action=""> {% csrf_token %}
-                        {{sub_blueprint_form.as_p}}
-
+                        {{sub_base_form.as_p}}
+                        <input type="submit" value="Upload" name="base_sub_button" />
                 </div>
-            </div>
+                <div class="col-md-6" id="blueprint">
+                    <div class="blueprint">
+
+                            {{sub_blueprint_form.as_p}}
+
+                    </div>
+                </div>
             </form>
         </div>
 

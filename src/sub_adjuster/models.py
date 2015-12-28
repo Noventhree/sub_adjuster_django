@@ -57,10 +57,11 @@ def code(total_start, total_end):
 
 
 class Subtitles(models.Model):
+    name = models.CharField(max_length=255, blank=True,)
     sub_file = models.FileField(blank=True)
-    line_A = models.CharField(max_length=255, blank=True, default='1')
-    line_B = models.CharField(max_length=255, blank=True, default='1')
-    line_C = models.CharField(max_length=255, blank=True, default='1')
+    line_A = models.CharField(max_length=255, blank=True)
+    line_B = models.CharField(max_length=255, blank=True)
+    line_C = models.CharField(max_length=255, blank=True)
 
     # def filename(self):
     #     return os.path.basename(self.sub_file)
@@ -81,10 +82,17 @@ class Adjuster(object):
         self.initial_deley = initial_deley
         self.multiplier = multiplier
 
+    # def getInitialDeley(self):
+    #     self.initial_deley =
+
     def get_initial_deley(self):
 
-        self.initial_deley = decode(self.subtitle_base.line_A)[0] - decode(self.subtitle_blueprint.line_A)[0]
+        self.initial_deley = decode(self.subtitle_blueprint.line_A)[0] - decode(self.subtitle_base.line_A)[0]
 
+    # def getMultiplier(self):
+    #     n = 0
+    #     if True:
+    #         b =
     def get_multiplyer(self):
         n = 0
         if self.subtitle_blueprint.line_B is not None and self.subtitle_base.line_B is not None:
