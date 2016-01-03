@@ -164,7 +164,7 @@ def get_parameters_view(request):
 
                 # adjusterObj.get_initial_deley()
             if adjusterObj.multiplier == 1:
-                pass
+                # pass
                 # adjusterObj.get_multiplyer()
 
                 adjusted_filename = get_adjusted_filename(baseSub.sub_file.name)
@@ -183,16 +183,16 @@ def get_parameters_view(request):
 
     return render(request, 'sub_adjuster/get_parameters.html', context)
 
-def send_file(request):
-    """
-    Send a file through Django without loading the whole file into
-    memory at once. The FileWrapper will turn the file object into an
-    iterator for chunks of 8KB.
-    """
-
-    adjusted_sub_id = request.session['adjusted_sub_id']
-    filename = __file__ # Select your file here.
-    wrapper = FileWrapper(File(filename))
-    response = HttpResponse(wrapper, content_type='text/plain')
-    response['Content-Length'] = os.path.getsize(filename)
-    return response
+# def send_file(request):
+#     """
+#     Send a file through Django without loading the whole file into
+#     memory at once. The FileWrapper will turn the file object into an
+#     iterator for chunks of 8KB.
+#     """
+#
+#     adjusted_sub_id = request.session['adjusted_sub_id']
+#     filename = __file__ # Select your file here.
+#     wrapper = FileWrapper(File(filename))
+#     response = HttpResponse(wrapper, content_type='text/plain')
+#     response['Content-Length'] = os.path.getsize(filename)
+#     return response

@@ -1,6 +1,7 @@
 from django.db import models
 import os
 import datetime
+import math
 
 
 # Create your models here.
@@ -34,7 +35,7 @@ def code(total_start, total_end):
     seconds_start = total_start // 1
     total_start -= seconds_start
 
-    miliseconds_start = total_start * 1000
+    miliseconds_start = math.ceil(total_start * 1000)
 
     hours_end = total_end // 3600
     total_end -= 3600 * hours_end
@@ -45,9 +46,9 @@ def code(total_start, total_end):
     seconds_end = total_end // 1
     total_end -= seconds_end
 
-    miliseconds_end = total_end * 1000
+    miliseconds_end = math.ceil(total_end * 1000)
 
-    line = '{:0>2}:{:0>2}:{:0>2},{:0>3} --> {:0>2}:{:0>2}:{:0>2},{:0>3}\\n'.format(int(hours_start), int(minutes_start),
+    line = '{:0>2}:{:0>2}:{:0>2},{:0>3} --> {:0>2}:{:0>2}:{:0>2},{:0>3}'.format(int(hours_start), int(minutes_start),
                                                                                    int(seconds_start),
                                                                                    int(miliseconds_start),
                                                                                    int(hours_end), int(minutes_end),
@@ -85,25 +86,25 @@ class Adjuster(object):
     # def getInitialDeley(self):
     #     self.initial_deley =
 
-    def get_initial_deley(self):
-
-        self.initial_deley = decode(self.subtitle_blueprint.line_A)[0] - decode(self.subtitle_base.line_A)[0]
+    # def get_initial_deley(self):
+    #
+    #     self.initial_deley = decode(self.subtitle_blueprint.line_A)[0] - decode(self.subtitle_base.line_A)[0]
 
     # def getMultiplier(self):
     #     n = 0
     #     if True:
     #         b =
-    def get_multiplyer(self):
+    def get_multiplier(self):
         n = 0
         if self.subtitle_blueprint.line_B is not None and self.subtitle_base.line_B is not None:
             b = (decode(self.subtitle_blueprint.line_B)[0] - decode(self.subtitle_blueprint.line_A)[0]) / \
-                (decode(self.subtitle_base.line_B)[0] - decode(self.subtitle_base.line_A)[0] - self.initial_deley)
+                (decode(self.subtitle_base.line_B)[0] - decode(self.subtitle_base.line_A)[0])
             n += 1
         else:
             b = 0
         if self.subtitle_blueprint.line_C is not None and self.subtitle_base.line_C is not None:
-            c = b = decode(self.subtitle_blueprint.line_C)[0] / (
-            decode(self.subtitle_base.line_C)[0] - self.initial_deley)
+            c = (decode(self.subtitle_blueprint.line_C)[0] - decode(self.subtitle_blueprint.line_A)[0]) / \
+                (decode(self.subtitle_base.line_C)[0] - decode(self.subtitle_base.line_A)[0])
             n += 1
         else:
             c = 0
@@ -111,7 +112,7 @@ class Adjuster(object):
         if n == 0:
             self.multiplier = 1
         else:
-            self.multiplier = n / (b + c)
+            self.multiplier = (b + c) / n
 
     def adjust_content(self):
         adjusted_content = []
@@ -119,7 +120,8 @@ class Adjuster(object):
             lines = f.readlines()
             for line in lines:
                 if ' --> ' in line:
-                    line = code(self.initial_deley + decode(line)[0] * self.multiplier,
-                                self.initial_deley + decode(line)[1] * self.multiplier)
+                    line_start = (decode(line)[0] - decode(self.subtitle_base.line_A)[0])*self.multiplier + decode(self.subtitle_blueprint.line_A)[0]
+                    line_end = (decode(line)[1] - decode(self.subtitle_base.line_A)[1])*self.multiplier + decode(self.subtitle_blueprint.line_A)[1]
+                    line = code(line_start, line_end) + '\n'
                 adjusted_content.append(line)
         return adjusted_content
