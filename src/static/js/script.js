@@ -17,28 +17,19 @@ $(function() {
     $(".ui-droppable").droppable({
         accept: ".ui-draggable",
         drop: function(event, ui) {
-//            console.log(".ui-droppable");
-//            $(".ui-droppable li").remove();
-            $(this.find(".ui-droppable li")).remove();
+            console.log(".ui-droppable");
+            $( this ).find( "li" ).remove();
             var dropped = ui.draggable;
             var droppedOn = $(this);
             $(dropped).clone().css({top: 0,left: 0}).appendTo(droppedOn);
-
-//            var to_show = String($(ui.draggable).text().match(/\d{2}[:]\d{2}[:]\d{2}[,]\d{3}\s[-][-][>]\s\d{2}[:]\d{2}[:]\d{2}[,]\d{3}/g)[0])
-//            document.getElementById('id_line_A').value=to_show
-//            htmlOfDroppedElement = $(ui.draggable).html();
-//            pElementToBeReplaced = $(this).find('.ui-droppable li');
-//            $(pElementToBeReplaced).html(htmlOfDroppedElement);
+            var to_show = String($(ui.draggable).text().match(/\d{2}[:]\d{2}[:]\d{2}[,]\d{3}\s[-][-][>]\s\d{2}[:]\d{2}[:]\d{2}[,]\d{3}/g)[0])
+            $( this ).find( "input" ).val(to_show)
         },
 
     });
 
 });
 
-//function getid(obj) {
-//            alert(obj.id);
-//        }
-//var currentid = getid
 
 submitForms = function(){
     document.forms["blueprint_sub_form"].submit();

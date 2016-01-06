@@ -44,11 +44,26 @@ def upload_file_view(request):
 def download_file_view(request):
     adjusted_sub_id = request.session['adjusted_sub_id']
     adjustedSub = Subtitles.objects.get(id=adjusted_sub_id)
-    context = {
-        'filepath': adjustedSub.sub_file.path,
+    # context = {
+    #     'filepath': adjustedSub.sub_file,
+    #
+    # }
+    # # path_to_file = os.path.realpath("random.xls")
+    # #     f = open(path_to_file, 'r')
+    # #     myfile = File(f)
+    # #     response = HttpResponse(myfile, content_type='application/vnd.ms-excel')
+    # #     response['Content-Disposition'] = 'attachment; filename=' + name
+    # #     return response
 
-    }
-    return render(request, 'sub_adjuster/download.html', context)
+    # return render(request, 'sub_adjuster/download.html', context)
+
+
+    fsock = open(adjustedSub.sub_file.path, 'r')
+    response = HttpResponse(fsock)
+    response['Content-Disposition'] = "attachment; filename=%s" % \
+                                     (os.path.basename(adjustedSub.sub_file.name))
+
+    return response
 
 
 def handle_file_to_display(path):
@@ -80,35 +95,6 @@ def handle_file_to_display(path):
             elif counter > 2 and content['text'] != '':
                 content['text'] += line
         return file_lines
-
-
-def adjust_file_view(request):
-    context = {
-
-    }
-
-    base_sub_id, blueprint_sub_id = request.session.get('base_sub_id', None), request.session.get(
-        'blueprint_sub_id', None)
-
-    baseSub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
-    adjusterObj = Adjuster(baseSub, blueprintSub)
-
-    if adjusterObj.initial_deley == 0:
-        adjusterObj.get_initial_deley()
-    if adjusterObj.multiplier == 1:
-        adjusterObj.get_multiplyer()
-
-    adjusted_filename = get_adjusted_filename(baseSub.sub_file.name)
-    adjusted_file_content = ContentFile(adjusterObj.adjust_content())
-
-    adjustedSub = Subtitles()
-    adjustedSub.sub_file.save(adjusted_filename, adjusted_file_content, save=True)
-
-    adjustedSub = Subtitles.objects.latest('id')
-    adjusted_sub_id = adjustedSub.id
-    request.session['adjusted_sub_id'] = adjusted_sub_id
-
-    return render(request, 'sub_adjuster/download.html', context)
 
 
 def get_adjusted_filename(filename):
@@ -177,22 +163,14 @@ def get_parameters_view(request):
                 adjusted_sub_id = adjustedSub.id
                 request.session['adjusted_sub_id'] = adjusted_sub_id
 
-            return render(request, 'sub_adjuster/download.html', context)
+
+            response = HttpResponse(adjustedSub.sub_file)
+            response['Content-Disposition'] = "attachment; filename={}".format(os.path.basename(adjustedSub.sub_file.name))
+
+
+            return response
 
 
 
     return render(request, 'sub_adjuster/get_parameters.html', context)
 
-# def send_file(request):
-#     """
-#     Send a file through Django without loading the whole file into
-#     memory at once. The FileWrapper will turn the file object into an
-#     iterator for chunks of 8KB.
-#     """
-#
-#     adjusted_sub_id = request.session['adjusted_sub_id']
-#     filename = __file__ # Select your file here.
-#     wrapper = FileWrapper(File(filename))
-#     response = HttpResponse(wrapper, content_type='text/plain')
-#     response['Content-Length'] = os.path.getsize(filename)
-#     return response
