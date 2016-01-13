@@ -11,6 +11,7 @@ li {
 .sub_guts {
 
     height: 350px;
+    width: 500px;
     border: 1px solid #ccc;
     background: #f2f2f2;
     padding: 6px;
@@ -20,9 +21,16 @@ li {
 .sub_form {
     display: inline-block;
 
+
 }
 .ui-droppable {
     height: 100px;
+    width: 500px;
+    border: 1px solid #ccc;
+    background: #f2f2f2;
+    padding: 6px;
+    overflow: auto;
+    display: inline-block;
 }
 .ui-droppable {
 

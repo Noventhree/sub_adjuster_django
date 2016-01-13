@@ -5,79 +5,84 @@
 
 
         <p>jeb {{ post_data }}</p>
+        <div class="container">
+            <div class="jumbotron">
+            <div class="row">
 
+                <div class="col-md-6">
 
-        <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-3">
-                <p>{{ base_file_name }}</p>
-                <div class="sub_guts" >
-                    <ul>
-                        {% for index, line in base_file_lines %}
+                    <div class="sub_guts" >
+                        <ul>
+                            {% for index, line in base_file_lines %}
 
-                        <div class="ui-draggable">
+                            <div class="ui-draggable">
 
-                            <li>{{ line|linebreaks }}</li>
+                                <li>{{ line|linebreaks }}</li>
 
-                        </div>
-                        {% endfor %}
-                    </ul>
+                            </div>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="sub_guts" >
+                        <ul>
+                            {% for index, line in blueprint_file_lines %}
+
+                            <div class="ui-draggable">
+
+                                <li>{{ line|linebreaks }}</li>
+
+                            </div>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                 <p>{{ blueprint_file_name }}</p>
-                <div class="sub_guts">
-                    <ul>
-                        {% for index, line in blueprint_file_lines %}
 
-                        <div class="ui-draggable">
 
-                            <li>{{ line|linebreaks }}</li>
+                <form method="POST" action=""> {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6" id="base" >
+                            <div class="ui-droppable">
+                                {{sub_base_form.line_A}}
+                            </div>
+                            <div class="ui-droppable">
+                                {{sub_base_form.line_B}}
+                            </div>
+                            <div class="ui-droppable">
+                                {{sub_base_form.line_C}}
+                            </div>
+
 
                         </div>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-3">
-            </div>
+                        <div class="col-md-6" id="blueprint">
+                            <div class="blueprint">
+
+                               <div class="ui-droppable">
+                                    {{sub_blueprint_form.line_A}}
+                                </div>
+                                <div class="ui-droppable">
+                                    {{sub_blueprint_form.line_B}}
+                                </div>
+                                <div class="ui-droppable">
+                                    {{sub_blueprint_form.line_C}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Submit Lines!" name="base_sub_button" class="btn btn-default btn-lg btn-block"/>
+                    </div>
+                </form>
+
+
         </div>
+</div>
 
-        <div class="row">
-            <div class="col-md-3"></div>
-            <form method="POST" action=""> {% csrf_token %}
-                <div class="col-md-3" id="base" >
-                    <div class="ui-droppable">
-                        {{sub_base_form.line_A}}
-                    </div>
-                    <div class="ui-droppable">
-                        {{sub_base_form.line_B}}
-                    </div>
-                    <div class="ui-droppable">
-                        {{sub_base_form.line_C}}
-                    </div>
-
-                    <input type="submit" value="Submit Lines!" name="base_sub_button" />
-                </div>
-                <div class="col-md-3" id="blueprint">
-                    <div class="blueprint">
-
-                       <div class="ui-droppable">
-                            {{sub_blueprint_form.line_A}}
-                        </div>
-                        <div class="ui-droppable">
-                            {{sub_blueprint_form.line_B}}
-                        </div>
-                        <div class="ui-droppable">
-                            {{sub_blueprint_form.line_C}}
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-md-3"></div>
-            </form>
-        </div>
 
     {% endblock %}

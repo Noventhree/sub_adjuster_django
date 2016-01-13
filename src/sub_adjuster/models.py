@@ -120,8 +120,9 @@ class Adjuster(object):
             lines = f.readlines()
             for line in lines:
                 if ' --> ' in line:
-                    line_start = (decode(line)[0] - decode(self.subtitle_base.line_A)[0])*self.multiplier + decode(self.subtitle_blueprint.line_A)[0]
-                    line_end = (decode(line)[1] - decode(self.subtitle_base.line_A)[1])*self.multiplier + decode(self.subtitle_blueprint.line_A)[1]
+                    adjustLine = lambda x: (decode(line)[x] - decode(self.subtitle_base.line_A)[x])*self.multiplier + decode(self.subtitle_blueprint.line_A)[x]
+                    line_start = adjustLine(0)
+                    line_end = adjustLine(1)
                     line = code(line_start, line_end) + '\n'
                 adjusted_content.append(line)
         return adjusted_content
