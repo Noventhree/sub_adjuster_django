@@ -35,7 +35,7 @@ def code(total_start, total_end):
     seconds_start = total_start // 1
     total_start -= seconds_start
 
-    miliseconds_start = math.ceil(total_start * 1000)
+    milliseconds_start = math.ceil(total_start * 1000)
 
     hours_end = total_end // 3600
     total_end -= 3600 * hours_end
@@ -49,23 +49,20 @@ def code(total_start, total_end):
     miliseconds_end = math.ceil(total_end * 1000)
 
     line = '{:0>2}:{:0>2}:{:0>2},{:0>3} --> {:0>2}:{:0>2}:{:0>2},{:0>3}'.format(int(hours_start), int(minutes_start),
-                                                                                   int(seconds_start),
-                                                                                   int(miliseconds_start),
-                                                                                   int(hours_end), int(minutes_end),
-                                                                                   int(seconds_end),
-                                                                                   int(miliseconds_end))
+                                                                                int(seconds_start),
+                                                                                int(milliseconds_start),
+                                                                                int(hours_end), int(minutes_end),
+                                                                                int(seconds_end),
+                                                                                int(miliseconds_end))
     return line
 
 
 class Subtitles(models.Model):
-    name = models.CharField(max_length=255, blank=True,)
+    name = models.CharField(max_length=255, blank=True, )
     sub_file = models.FileField(blank=True)
     line_A = models.CharField(max_length=255, blank=True)
     line_B = models.CharField(max_length=255, blank=True)
     line_C = models.CharField(max_length=255, blank=True)
-
-    # def filename(self):
-    #     return os.path.basename(self.sub_file)
 
 
 class Parameters(models.Model):
@@ -120,7 +117,8 @@ class Adjuster(object):
             lines = f.readlines()
             for line in lines:
                 if ' --> ' in line:
-                    adjustLine = lambda x: (decode(line)[x] - decode(self.subtitle_base.line_A)[x])*self.multiplier + decode(self.subtitle_blueprint.line_A)[x]
+                    adjustLine = lambda x: (decode(line)[x] - decode(self.subtitle_base.line_A)[x]) * self.multiplier + \
+                                           decode(self.subtitle_blueprint.line_A)[x]
                     line_start = adjustLine(0)
                     line_end = adjustLine(1)
                     line = code(line_start, line_end) + '\n'

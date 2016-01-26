@@ -1,0 +1,52 @@
+{% extends "sub_adjuster/base.html" %}
+
+
+    {% block user_content %}
+
+
+        <p>jeb {{ post_data }}</p>
+        <div class="container">
+            <div class="jumbotron">
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="sub_guts" >
+                                {% for index, line in base_file_lines %}
+                                <div>
+                                    {{ line|linebreaks }}
+                                </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="sub_guts" >
+                                {% for index, line in adjusted_file_lines %}
+
+                                <div>
+
+                                    {{ line|linebreaks }}
+
+                                </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <form method="POST" action=""> {% csrf_token %}
+                        <input type="submit" value="Download" name="base_sub_button" class="btn btn-default btn-lg btn-block"/>
+
+                    </form>
+                    <form action="/get_parameters" method="GET">
+                        <input type="submit" value="Go Back" name="base_sub_button" class="btn btn-default btn-lg btn-block"/>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    {% endblock %}

@@ -20,15 +20,13 @@ class GetLinesForm(forms.ModelForm):
     class Meta:
         model = Subtitles
         fields = ['line_A', 'line_B', 'line_C']
-# class InitializeSubtitlesBaseForm(forms.ModelForm):
-#     class Meta:
-#         model = Subtitles
-#         fields = ['line_A', 'line_B', 'line_C']
-#
-# class InitializeParametersBlueprintForm(forms.ModelForm):
-#     class Meta:
-#         model = Subtitles
-#         fields = ['line_A', 'line_B', 'line_C']
+    # def clean_line_A(self):
+    #     data = self.cleaned_data.get('line_A')
+    #     if " --> " not in data:
+    #         raise forms.ValidationError("Please use a string in format - hh:mm:ss,ms --> hh:mm:ss,ms")
+    #     return data
+
+
 
 class InitializeParametersForm(forms.ModelForm):
     class Meta:

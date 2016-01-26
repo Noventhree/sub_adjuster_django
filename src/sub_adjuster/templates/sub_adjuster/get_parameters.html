@@ -12,49 +12,44 @@
                 <div class="col-md-6">
 
                     <div class="sub_guts" >
-                        <ul>
                             {% for index, line in base_file_lines %}
 
                             <div class="ui-draggable">
-
-                                <li>{{ line|linebreaks }}</li>
-
+                                {{ line|linebreaks }}
                             </div>
                             {% endfor %}
-                        </ul>
                     </div>
                 </div>
 
                 <div class="col-md-6">
 
                     <div class="sub_guts" >
-                        <ul>
                             {% for index, line in blueprint_file_lines %}
 
                             <div class="ui-draggable">
 
-                                <li>{{ line|linebreaks }}</li>
+                                {{ line|linebreaks }}
 
                             </div>
                             {% endfor %}
-                        </ul>
                     </div>
                 </div>
             </div>
+            </div>
 
 
-
+            <div class="jumbotron">
                 <form method="POST" action=""> {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6" id="base" >
                             <div class="ui-droppable">
-                                {{sub_base_form.line_A}}
+                                {{sub_base_form.line_A.as_hidden}}
                             </div>
                             <div class="ui-droppable">
-                                {{sub_base_form.line_B}}
+                                {{sub_base_form.line_B.as_hidden}}
                             </div>
                             <div class="ui-droppable">
-                                {{sub_base_form.line_C}}
+                                {{sub_base_form.line_C.as_hidden}}
                             </div>
 
 
@@ -63,13 +58,13 @@
                             <div class="blueprint">
 
                                <div class="ui-droppable">
-                                    {{sub_blueprint_form.line_A}}
+                                    {{sub_blueprint_form.line_A.as_hidden}}
                                 </div>
                                 <div class="ui-droppable">
-                                    {{sub_blueprint_form.line_B}}
+                                    {{sub_blueprint_form.line_B.as_hidden}}
                                 </div>
                                 <div class="ui-droppable">
-                                    {{sub_blueprint_form.line_C}}
+                                    {{sub_blueprint_form.line_C.as_hidden}}
                                 </div>
 
                             </div>

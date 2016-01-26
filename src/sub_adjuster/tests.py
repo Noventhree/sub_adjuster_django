@@ -20,9 +20,9 @@ class AdjusterTestCase(TestCase):
 
     def test_get_multiplier(self):
 
-        subBase = Subtitles.objects.get(name='base')
-        subBlue = Subtitles.objects.get(name='blueprint')
-        adj1 = Adjuster(subBase, subBlue)
+        sub_base = Subtitles.objects.get(name='base')
+        sub_blue = Subtitles.objects.get(name='blueprint')
+        adj1 = Adjuster(sub_base, sub_blue)
         adj1.get_multiplier()
         self.assertAlmostEqual(adj1.multiplier, 1.3)
 

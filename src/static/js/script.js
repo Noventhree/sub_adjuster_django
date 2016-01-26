@@ -1,10 +1,10 @@
 
 
 $(function(){
-    $("li").hover(function(){
-        $(this).css("background-color", "pink");
+    $(".ui-draggable").hover(function(){
+        $(this).css("background-color", "#12A191");
         }, function(){
-        $(this).css("background-color", "#89E8BF");
+        $(this).css("background-color", "#0E7F73");
     });
 });
 
@@ -12,13 +12,14 @@ $(function() {
     $(".ui-draggable").draggable({
         cursor: "crosshair",
         revert: "invalid",
+
         helper : "clone"});
 
     $(".ui-droppable").droppable({
         accept: ".ui-draggable",
         drop: function(event, ui) {
             console.log(".ui-droppable");
-            $( this ).find( "li" ).remove();
+            $( this ).find( ".ui-draggable" ).remove();
             var dropped = ui.draggable;
             var droppedOn = $(this);
             $(dropped).clone().css({top: 0,left: 0}).appendTo(droppedOn);

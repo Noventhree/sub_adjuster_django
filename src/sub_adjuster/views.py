@@ -163,14 +163,37 @@ def get_parameters_view(request):
                 adjusted_sub_id = adjustedSub.id
                 request.session['adjusted_sub_id'] = adjusted_sub_id
 
-
-            response = HttpResponse(adjustedSub.sub_file)
-            response['Content-Disposition'] = "attachment; filename={}".format(os.path.basename(adjustedSub.sub_file.name))
-
-
-            return response
+            return HttpResponseRedirect('/confirm_adjustment/')
 
 
 
     return render(request, 'sub_adjuster/get_parameters.html', context)
+
+def confirm_adjustment_view(request):
+
+    base_sub_id = request.session['base_sub_id']
+    adjusted_sub_id = request.session['adjusted_sub_id']
+
+    base_sub = Subtitles.objects.get(id=base_sub_id)
+    adjusted_sub = Subtitles.objects.get(id=adjusted_sub_id)
+
+    base_file_lines = handle_file_to_display(base_sub.sub_file.path)
+    adjusted_file_lines = handle_file_to_display(adjusted_sub.sub_file.path)
+
+    context = {
+        "base_file_lines": enumerate(base_file_lines),
+        "adjusted_file_lines": enumerate(adjusted_file_lines),
+        "base_file_name": str(base_sub_id),
+        "adjusted_file_name": str(adjusted_sub_id),
+        # "post_data": request.session['post'],
+
+    }
+    if request.method == 'POST':
+
+        response = HttpResponse(adjusted_sub.sub_file)
+        response['Content-Disposition'] = "attachment; filename={}".format(os.path.basename(adjusted_sub.sub_file.name))
+        return response
+    return render(request, 'sub_adjuster/confirm_adjustment.html', context)
+
+
 
