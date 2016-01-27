@@ -4,14 +4,18 @@
     <div class="container">
         <div class="jumbotron">
             <div class="row">
+                <h2>Upload two files with .srt extensions, first should be the file you wish to adjust and the second
+                    should be the one with correct timings</h2>
+            </div>
+            <div class="row">
                 <form enctype="multipart/form-data" method="POST" action="" name="base_sub_form"> {% csrf_token %}
                     <div class="col-md-6">
-                        <h3>Upload base subtitles</h3>
+                        <h3>First file:</h3>
                                 {{ base_sub_upload_form.as_p }}
                                 <input type="submit" value="Upload" name="base_sub_button" />
                     </div>
                     <div class="col-md-6">
-                        <h3>Upload blueprint subtitles</h3>
+                        <h3>Second file:</h3>
                                 {{ blueprint_sub_upload_form.as_p }}
                     </div>
                 </form>
