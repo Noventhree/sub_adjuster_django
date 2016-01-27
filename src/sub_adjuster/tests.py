@@ -1,16 +1,16 @@
 from django.test import TestCase
-from .models import Adjuster, Subtitles, code, decode
+from .models import Adjuster, Subtitles, encode, decode
 
 
 
-class codingTestCase(TestCase):
+class encodingTestCase(TestCase):
     # def codeTest(self):
     #     self.assertEqual()
 
     def test_decode(self):
         self.assertEqual((40271.111,40271.111), decode("11:11:11,111 --> 11:11:11,111"))
-    def test_code(self):
-        self.assertEqual(code(40271.111,40271.111), "11:11:11,111 --> 11:11:11,111")
+    def test_encode(self):
+        self.assertEqual(encode(40271.111, 40271.111), "11:11:11,111 --> 11:11:11,111")
 class AdjusterTestCase(TestCase):
     def setUp(self):
 

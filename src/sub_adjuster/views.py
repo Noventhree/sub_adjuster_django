@@ -78,12 +78,10 @@ def get_parameters_view(request):
     base_sub_id = request.session.get('base_sub_id', None)
     base_sub = Subtitles.objects.get(id=base_sub_id)
     base_file_lines = handle_file_to_display(base_sub.sub_file.path)
-    base_file_name = base_sub.sub_file.name
 
     blueprint_sub_id = request.session.get('blueprint_sub_id', None)
-    blueprintSub = Subtitles.objects.get(id=blueprint_sub_id)
-    blueprint_file_lines = handle_file_to_display(blueprintSub.sub_file.path)
-    blueprint_file_name = blueprintSub.sub_file.name
+    blueprint_sub = Subtitles.objects.get(id=blueprint_sub_id)
+    blueprint_file_lines = handle_file_to_display(blueprint_sub.sub_file.path)
 
     context = {
         "base_file_lines": enumerate(base_file_lines),
@@ -93,7 +91,6 @@ def get_parameters_view(request):
         "par_form": InitializeParametersForm,
         "base_file_name": str(base_sub_id),
         "blueprint_file_name": str(blueprint_sub_id),
-        # "post_data": request.session['post'],
     }
 
     form1 = GetLinesForm(request.POST, prefix='base')
@@ -104,36 +101,36 @@ def get_parameters_view(request):
         form2_valid = form2.is_valid()
 
         if form1_valid and form2_valid:
-            base_sub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
+            base_sub, blueprint_sub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
 
             base_sub.line_A = request.POST['base-line_A']
             base_sub.line_B = request.POST['base-line_B']
             base_sub.line_C = request.POST['base-line_C']
             base_sub.save()
 
-            blueprintSub.line_A = request.POST['blueprint-line_A']
-            blueprintSub.line_B = request.POST['blueprint-line_B']
-            blueprintSub.line_C = request.POST['blueprint-line_C']
-            blueprintSub.save()
+            blueprint_sub.line_A = request.POST['blueprint-line_A']
+            blueprint_sub.line_B = request.POST['blueprint-line_B']
+            blueprint_sub.line_C = request.POST['blueprint-line_C']
+            blueprint_sub.save()
 
-            base_sub, blueprintSub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
-            adjusterObj = Adjuster(base_sub, blueprintSub)
-            if adjusterObj.initial_deley == 0:
+            base_sub, blueprint_sub = Subtitles.objects.get(id=base_sub_id), Subtitles.objects.get(id=blueprint_sub_id)
+            adjuster = Adjuster(base_sub, blueprint_sub)
+            if adjuster.initial_deley == 0:
                 pass
 
-                # adjusterObj.get_initial_deley()
-            if adjusterObj.multiplier == 1:
+                # adjuster.get_initial_deley()
+            if adjuster.multiplier == 1:
                 # pass
-                # adjusterObj.get_multiplyer()
+                # adjuster.get_multiplyer()
 
                 adjusted_filename = get_adjusted_filename(base_sub.sub_file.name)
-                adjusted_file_content = ContentFile("".join(adjusterObj.adjust_content()))
+                adjusted_file_content = ContentFile("".join(adjuster.adjust_content()))
 
-                adjustedSub = Subtitles()
-                adjustedSub.sub_file.save(adjusted_filename, adjusted_file_content, save=True)
+                adjusted_sub = Subtitles()
+                adjusted_sub.sub_file.save(adjusted_filename, adjusted_file_content, save=True)
 
-                adjustedSub = Subtitles.objects.latest('id')
-                adjusted_sub_id = adjustedSub.id
+                adjusted_sub = Subtitles.objects.latest('id')
+                adjusted_sub_id = adjusted_sub.id
                 request.session['adjusted_sub_id'] = adjusted_sub_id
 
             return HttpResponseRedirect('/confirm_adjustment/')
@@ -158,7 +155,6 @@ def confirm_adjustment_view(request):
         "adjusted_file_lines": enumerate(adjusted_file_lines),
         "base_file_name": str(base_sub_id),
         "adjusted_file_name": str(adjusted_sub_id),
-        # "post_data": request.session['post'],
 
     }
     if request.method == 'POST':

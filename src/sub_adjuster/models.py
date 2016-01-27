@@ -1,10 +1,8 @@
 from django.db import models
-import os
-import datetime
 import math
-# -*- coding: utf-8 -*-
 
-# Create your models here.
+
+# -*- coding: utf-8 -*-
 
 # for format hh:mm:ss,ms --> hh:mm:ss,ms'
 def decode(line):
@@ -25,7 +23,7 @@ def decode(line):
     return total_start, total_end
 
 
-def code(total_start, total_end):
+def encode(total_start, total_end):
     hours_start = total_start // 3600
     total_start -= 3600 * hours_start
 
@@ -80,17 +78,6 @@ class Adjuster(object):
         self.initial_deley = initial_deley
         self.multiplier = multiplier
 
-    # def getInitialDeley(self):
-    #     self.initial_deley =
-
-    # def get_initial_deley(self):
-    #
-    #     self.initial_deley = decode(self.subtitle_blueprint.line_A)[0] - decode(self.subtitle_base.line_A)[0]
-
-    # def getMultiplier(self):
-    #     n = 0
-    #     if True:
-    #         b =
     def get_multiplier(self):
         n = 0
         if self.subtitle_blueprint.line_B is not None and self.subtitle_base.line_B is not None:
@@ -113,14 +100,17 @@ class Adjuster(object):
 
     def adjust_content(self):
         adjusted_content = []
+
+        def adjust_line(x):
+            return (decode(line)[x] - decode(self.subtitle_base.line_A)[x]) * self.multiplier + \
+                   decode(self.subtitle_blueprint.line_A)[x]
+
         with open(self.subtitle_base.sub_file.path, 'r') as f:
             lines = f.readlines()
             for line in lines:
                 if ' --> ' in line:
-                    adjustLine = lambda x: (decode(line)[x] - decode(self.subtitle_base.line_A)[x]) * self.multiplier + \
-                                           decode(self.subtitle_blueprint.line_A)[x]
-                    line_start = adjustLine(0)
-                    line_end = adjustLine(1)
-                    line = code(line_start, line_end) + '\n'
+                    line_start = adjust_line(0)
+                    line_end = adjust_line(1)
+                    line = encode(line_start, line_end) + '\n'
                 adjusted_content.append(line)
         return adjusted_content
