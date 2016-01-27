@@ -27,16 +27,8 @@
         </div>
         <!-- CONTENT-->
         <div>
-            {% if  user.is_authenticated %}
                 {% block user_content %}
                 {% endblock %}
-
-            {% else %}
-                <p>Log In or Register!</p>
-                {% block content %}
-                {% endblock %}
-            {% endif %}
-
         </div>
         <!-- FOOT-->
         <div class="foot">
