@@ -2,7 +2,7 @@ from django.db import models
 import os
 import datetime
 import math
-
+# -*- coding: utf-8 -*-
 
 # Create your models here.
 

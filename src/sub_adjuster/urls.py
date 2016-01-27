@@ -9,20 +9,4 @@ urlpatterns = [
     url(r'^confirm_adjustment/$', views.confirm_adjustment_view, name='confirm_adjustment'),
     # url(r'^download/$', views.download_file_view, name='adjust'),
 
-    #
-    # # LOGIN
-    # # url(r'^login/$', views.login_view, name='login'),
-    # url(r'^login/$', views.login_view),
-    # url(r'^auth/$', views.auth_view),
-    # url(r'^logout/$', views.logout_view),
-    # url(r'^loggedin/$', views.loggedin_view),
-    # # url(r'^invalid/$', views.invalid_login_view),
-    #
-    #
-    # # REGISTRATION
-    # url(r'^register/$', views.register_user_view),
-    # url(r'^register_success/$', views.register_success_view),
-    #
-    # #GOAL CREATION
-    # url(r'^add_goal/$', views.add_goal_view)
 ]
